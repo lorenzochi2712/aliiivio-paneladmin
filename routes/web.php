@@ -5,6 +5,10 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UsuarioController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsuarioAppController;
+use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\FirebaseController;
+use App\Http\Controllers\SocialController;
+use App\Http\Controllers\AnalyticsController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -25,6 +29,18 @@ Route::group(['prefix' => 'auth'], function () {
   # Acción de cierre de sesión
   Route::post('logout', [AuthController::class, 'logout']);
 });
+        // Rutas para citas médicas
+        Route::get('/admin/appointments', [AppointmentController::class, 'index'])->name('appointments.index');
+        Route::post('/admin/appointments', [AppointmentController::class, 'store'])->name('appointments.store');
+        
+        // Rutas para Firebase (usuarios por edad, sexo, ubicación)
+        Route::get('/admin/firebase/charts', [FirebaseController::class, 'charts'])->name('firebase.charts');
+        
+        // Rutas para redes sociales
+        Route::get('/admin/social/followers', [SocialController::class, 'index'])->name('social.followers');
+        
+        // Rutas para estadísticas de sitio web
+        Route::get('/admin/analytics/visits', [AnalyticsController::class, 'index'])->name('analytics.visits');
 
 # RUTAS PARA CLIENTE
 # Index
@@ -44,6 +60,9 @@ Route::group(['prefix' => 'admin'], function () {
       Route::get('show' . '/{token}', [UsuarioController::class, 'show']);
       Route::post('edit', [UsuarioController::class, 'edit']);
       Route::post('delete', [UsuarioController::class, 'delete']);
+    });
+    #Modulo de graficos
+    Route::group(['prefix' => 'graficos'], function (){
     });
     # Módulo de gestión de usuarios app
     Route::group(['prefix' => 'usuarioapp'], function () {
